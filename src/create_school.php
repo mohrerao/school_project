@@ -1,15 +1,15 @@
 <?php
-//print_r($_POST);die();
 // Create a school entity
-include_once '/Users/kiran.rao/Sites/School_project/src/School.php';
+require "vendor/autoload.php";
+use School\School;
 if (!empty($_POST)) {
-    $school = new school();
+    $school = new School();
     $school->name = $_POST['school_name'];
     $school->phone = $_POST['phone'];
     $school->email = $_POST['email'];
     $school->website = $_POST['website'];
     $school->address = $_POST['address'];
-    $msg = $school->create();
+    $msg = $school->create('school');
 }
 ?>
 
@@ -27,28 +27,31 @@ if (!empty($_POST)) {
 <img id="top" src="top.png" alt="">
 <div id="form_container">
     <h1><a>Create / Update School</a></h1>
-    <!--    <div class='msg'>--><?php //echo $msg ? $msg : "" ?><!--</div>-->
-    <form id="school_form" class="appnitro" method="post" action="/School_project/src/form_listener.php">
+    <?php
+    if (!empty($msg)) {
+        print("<div class='msg'>$msg</div>");
+    }
+    ?>
+    <form id="school_form" class="appnitro" method="post" action="/School_project/src/create_school.php">
         <div class="form_description">
             <h2>Create / Update School</h2>
             <p>This is your form description. Click here to edit.</p>
         </div>
         <ul>
-            <li id="li_6" class="">
-                <label class="description" for="element_6">Select School </label>
-                <div>
-                    <select class="element select medium" id="select_school" name="select_school">
-                        <?php
-                        include_once '/Users/kiran.rao/Sites/School_project/src/Helper.php';
-                        $schools = Helper::get_list('school', array('id', 'name'), 0, 0, '', '');
-                        foreach ($schools as $school) {
-                            echo "<option value = {$school['id']}>{$school['name']}</option>";
-                        }
-                        ?>
-                    </select>
-                </div>
-                <p class="guidelines" id="guide_6"><small>Select school you want to edit</small></p>
-            </li>
+            <!--            <li id="li_6" class="">-->
+            <!--                <label class="description" for="element_6">Select School </label>-->
+            <!--                <div>-->
+            <!--                    <select class="element select medium" id="select_school" name="select_school">-->
+            <!--                        --><?php
+            //                        include_once '/Users/kiran.rao/Sites/School_project/src/Helper.php';
+            //                        $schools = Helper::get_list('school', array('id','name'),0,0,'','');
+            //                        foreach ($schools as  $school) {
+            //                            echo "<option value = {$school['id']}>{$school['name']}</option>";
+            //                        }
+            //                        ?>
+            <!--                    </select>-->
+            <!--                </div><p class="guidelines" id="guide_6"><small>Select school you want to edit</small></p>-->
+            <!--            </li>-->
             <li id="li_1">
                 <label class="description" for="school_name">School Name </label>
                 <div>
