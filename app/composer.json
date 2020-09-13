@@ -1,0 +1,17 @@
+{
+  "require": {
+    "vendor/twig/twig": "^3.0",
+    "vendor/elasticsearch/elasticsearch": "~7.0",
+    "vendor/predis/predis": "^1.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "School\\": "/app/app/src",
+      "DB\\": "/app/app/Database",
+      "Message\\": "/app/app/src",
+      "User\\": "/app/app/src",
+      "Order\\": "/app/app/src",
+      "Laptop\\": "/app/app/src"
+    }
+  }
+}
