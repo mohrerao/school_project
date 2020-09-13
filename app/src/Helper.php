@@ -45,7 +45,7 @@ class Helper
         $redis_key = "School_".$school_id.":Class_".$class_id.":Section_".$section_id;
         $redis_cache = $connection->getRedisCache($redis_key);
 //        print_r($redis_key);die();
-        if (empty(unserialize($redis_cache))) {
+        if (empty($redis_cache)) {
             $query = "SELECT stu.id, stu.name 'Student Name', stu.parent_name 'Parent Name', stu.address Address, sec.name 'Section', cls.name 'Class', sch.name 'School'" .
                 "FROM student AS stu LEFT JOIN class AS cls ON stu.class_id = cls.id " .
                 "LEFT JOIN section AS sec ON stu.section_id = sec.id " .
