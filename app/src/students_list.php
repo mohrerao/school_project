@@ -5,8 +5,6 @@ use School\Helper;
 $msg = '';
 //$result =[];
 
-$redis_client = new Redis();
-
 // Get school list
 $schools = Helper::get_list('school', ['id', 'name']);
 if (array_key_exists('school_id', $_GET)) {

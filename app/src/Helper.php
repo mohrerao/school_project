@@ -44,12 +44,12 @@ class Helper
         $connection = new DataOperations();
         $redis_key = "School_".$school_id.":Class_".$class_id.":Section_".$section_id;
         $redis_cache = $connection->getRedisCache($redis_key);
-//        print_r($redis_key);die();
-        if (empty($redis_cache)) {
+//        print_r($redis_cache);die();
+        if (empty(unserialize($redis_cache))) {
             $query = "SELECT stu.id, stu.name 'Student Name', stu.parent_name 'Parent Name', stu.address Address, sec.name 'Section', cls.name 'Class', sch.name 'School'" .
                 "FROM student AS stu LEFT JOIN class AS cls ON stu.class_id = cls.id " .
                 "LEFT JOIN section AS sec ON stu.section_id = sec.id " .
-                "LEFT JOIN school as sch ON cls.school_id = sch.id ";
+                "LEFT JOIN school as sch ON cls.school_id = sch.id  ORDER BY stu.id asc";
             if ($school_id != 0 or $class_id != 0 or $section_id != 0) {
                 $query .= "WHERE ";
                 if ($school_id != 0) {
@@ -70,11 +70,11 @@ class Helper
             }
             if (!empty($query)) {
                 $result = $connection->execute_query($query);
-                $connection->setRedisCache($redis_key, $result);
+                $connection->setRedisCache($redis_key, serialize($result));
                 return !empty($result) ? $result : "No Result Found";
             }
         } else {
-            return $redis_cache;
+            return unserialize($redis_cache);
         }
     }
 }

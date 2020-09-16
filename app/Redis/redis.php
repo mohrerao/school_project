@@ -20,5 +20,4 @@ if (!empty($keys)){
     }
 }
 $redis->flushAll();
-
 ?>

@@ -1,12 +1,18 @@
 version: '3'
 volumes:
   jenkins_home:
+networks:
+  newrelic-php:
 
 services:
   app:
     build:
       context: ""
       dockerfile: .docker/Dockerfile
+      args:
+        NEW_RELIC_AGENT_VERSION: 9.13.0,270
+        NEW_RELIC_LICENSE_KEY: afa831886d72178a24bcaf159ca48bd4bcf5NRAL
+        NEW_RELIC_APPNAME: newrelic-php-daemon
     image: school
     ports:
       - 8080:80
@@ -15,6 +21,7 @@ services:
     links:
       - mysql
       - redis
+      - newrelic
     environment:
       DB_HOST: mysql
       DB_DATABASE: school
@@ -23,6 +30,8 @@ services:
       REDIS_HOST: redis
       SESSION_DRIVER: redis
       CACHE_DRIVER: redis
+    networks:
+      - newrelic-php
   mysql:
     image: mysql:5.7
     ports:
@@ -32,14 +41,26 @@ services:
       MYSQL_USER: school_admin
       MYSQL_PASSWORD: 123456
       MYSQL_ROOT_PASSWORD: 123456
+    networks:
+      - newrelic-php
   redis:
     image: redis:4.0-alpine
     ports:
       - 16379:6379
-  jenkins:
-    image: jenkins/jenkins:lts
+    networks:
+      - newrelic-php
+  newrelic:
+    image: newrelic/php-daemon
     ports:
-      - 8082:8080
-      - 50000:50000
-    volumes:
-      - ./jenkins_home:/var/jenkins_home
+      - 31339:31339
+    networks:
+      - newrelic-php
+    container_name: newrelic-php-daemon
+
+#  jenkins:
+#    image: jenkins/jenkins:lts
+#    ports:
+#      - 8082:8080
+#      - 50000:50000
+#    volumes:
+#      - ./jenkins_home:/var/jenkins_home
